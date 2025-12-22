@@ -1,0 +1,5 @@
+# LaTeX / latexmk build artefacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log

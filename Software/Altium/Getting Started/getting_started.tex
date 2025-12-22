@@ -1,0 +1,199 @@
+\documentclass[12pt,a4paper]{article}
+% \usepackage[utf-8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage{eso-pic}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{cleveref}
+
+\setlength{\parindent}{0pt}
+
+\setmainfont{proxima-nova-regular.ttf}[
+Path = ./fonts/,
+BoldFont = proxima-nova-semibold.ttf,
+ItalicFont = proxima-nova-regular-italic.otf,
+BoldItalicFont  = proxima-nova-semibold-italic.otf,
+Scale = 1.0]
+
+\input{emphasis_boxes}
+
+% Define colors
+\definecolor{lightergray}{RGB}{242,242,242}
+\definecolor{lightgray}{RGB}{217,217,217}
+\definecolor{mediumgray}{RGB}{191,191,191}
+\definecolor{brightyellow}{RGB}{255,204,0}
+
+% Background shapes for every page
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \ifnum\value{page}=1
+    % Top shapes
+    % Light gray triangle (left top)
+        \fill[mediumgray] (current page.north west) -- 
+                         ($(current page.north west) + (0,-6cm)$) -- 
+                         ($(current page.north west) + (6cm,0)$) -- cycle;
+        
+        % White paper shape in middle (with rounded corners)
+        \fill[lightgray] (current page.north west) -- 
+                     ($(current page.north west) + (0,-3cm)$) -- 
+                     ($(current page.north east) + (3cm,0)$) -- cycle;
+        
+        % Yellow triangle (right top)
+        \fill[brightyellow] (current page.north east) -- 
+                            ($(current page.north east) + (-5.5cm,0)$) -- 
+                            ($(current page.north east) + (0,-5.5cm)$) -- cycle;
+        
+        % Bottom shapes
+        % Medium gray triangle (left bottom)
+        \fill[lightergray] (current page.south west) -- 
+                          ($(current page.south west) + (0,6cm)$) -- 
+                          ($(current page.south west) + (6cm,0)$) -- cycle;
+        
+        % White paper shape in middle (with rounded corners)
+        \fill[lightgray] (current page.south west) -- 
+                     ($(current page.south west) + (0,1.5cm)$) -- 
+                     ($(current page.south east) + (3cm,3.5cm)$) -- 
+                     ($(current page.south east) - (0cm,-0cm)$) -- cycle;
+    
+        % Light gray triangle (right bottom)
+        \fill[mediumgray] (current page.south east) -- 
+                         ($(current page.south east) + (-7cm,0)$) -- 
+                         ($(current page.south east) + (0,7cm)$) -- cycle;
+     \else
+    % Top shapes
+    % Light gray triangle (left top)
+        \fill[mediumgray] (current page.north west) -- 
+                         ($(current page.north west) + (0,-2.7cm)$) -- 
+                         ($(current page.north west) + (2.7cm,0)$) -- cycle;
+        
+        % Light Gray (top middle)
+        \fill[lightgray] (current page.north west) -- 
+                     ($(current page.north west) + (0,-1.5cm)$) -- 
+                     ($(current page.north east) + (1cm,0)$) -- cycle;
+        
+        % Yellow triangle (right top)
+        \fill[brightyellow] (current page.north east) -- 
+                            ($(current page.north east) + (-2.5cm,0)$) -- 
+                            ($(current page.north east) + (0,-2.5cm)$) -- cycle;
+        
+        % Bottom shapes
+        % Medium gray triangle (left bottom)
+        \fill[lightergray] (current page.south west) -- 
+                          ($(current page.south west) + (0,2cm)$) -- 
+                          ($(current page.south west) + (2cm,0)$) -- cycle;
+        
+        % White paper shape in middle (with rounded corners)
+        \fill[lightgray] (current page.south west) -- 
+                     ($(current page.south west) + (0,0.2cm)$) -- 
+                     ($(current page.south east) + (3cm,2cm)$) -- 
+                     ($(current page.south east) - (0cm,-0cm)$) -- cycle;
+    
+        % Light gray triangle (right bottom)
+        \fill[mediumgray] (current page.south east) -- 
+                         ($(current page.south east) + (-4cm,0)$) -- 
+                         ($(current page.south east) + (0,4cm)$) -- cycle;
+
+        \node at ($(current page.south east) + (-1.2cm,1.2cm)$) {
+            \includegraphics[width=1.3cm]{template/white_hex.png}
+            % \textbf{\small LOGO}
+        };
+    \fi
+  \end{tikzpicture}
+}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%%%%% PAGE CONTENT STARTS BELOW %%%%%
+\begin{document}
+\thispagestyle{empty} 
+\vspace*{3.5cm}
+
+% Title page START
+\begin{center}
+    \begin{minipage}{0.7\textwidth}
+        % Main Title
+        \includegraphics[width=0.6\textwidth]{images/Altium_Logo_BLK.png}\\[0.5cm]
+        % Subtitle 
+        {\fontsize{25pt}{5pt}\selectfont Getting Started Guide}\\[6cm]
+        % Author 
+        \large \normalfont Yuki Suter\\[0.3cm]
+        % Date 
+        \large 20/12/2025\\[4cm]
+          
+        \begin{center}
+          % Logos
+          \begin{minipage}{0.45\textwidth}
+            \centering
+            \includegraphics[width=0.7\textwidth]{template/dark_full.png}
+            % \textbf{[RACING LOGO]}
+          \end{minipage}
+          \hfill
+          \vline
+          \hfill
+          \begin{minipage}{0.45\textwidth}
+            \centering
+            \includegraphics[width=0.6\textwidth]{template/UofG.png}
+            % \textbf{[GLASGOW LOGO]}
+          \end{minipage}
+          
+          \vspace{1cm}
+          {\small -- FOR INTERNAL USE ONLY --}
+        \end{center}
+    \end{minipage}
+\end{center}
+% Title page OVER
+
+\clearpage  % Start next page
+
+\tableofcontents
+
+\section{Introduction}
+This is the UGR getting started guide for Altium. In December 2025 the decision was made to make the switch from KiCAD (a FOSS hobbyist project) to Altium (industry standard proprietary software). We hope that being able to use this software gives UGR members the preparation they need going into industry having had hands on experience with the exact software used at companies around the world. A sponsorship was obtained giving the team access to the company's online project management software Altium 365 workspace where each design will be stored. This is a move away from the old ways of using the fileshare to host our KiCAD projects, and should streamline our processes.\\
+
+Altium is actually very well documented in the form of tutorial videos and wikis. This guide will show you where to go to find this information, and lay out some UGR standard practices that may differ from available documentation.
+
+\section{Licensing}
+Whilst the team has a sponsorship for a number of licenses, these are being kept reserved for any members/advisors that do not have access to the standard Altium Student license. Therefore any information regarding software licesing in this documentation applies to those eligible for the student license (anyone with a student email). If you \textbf{do not have access} to Altium Student please make yourself known to your team head, who will prepare the alternative licensing method for you.
+
+\newpage
+\section{Setup}
+
+\subsection{Altium Student Enrollment}
+For the vast majority of UGR electronics members, we will make use of the standard Altium Student licensing. This license allows anyone enrolled at a valid university course to have access to the Altium Designer Professional software. As such, the enrolling onto this is pretty simple. Use the following link to enroll into their programme, and create an account. 
+
+\begin{note}
+Make sure to use your student email when signing up.
+\end{note}
+
+\begin{minipage}{\textwidth}
+\centering
+\href{https://www.altium.com/education/students}{https://www.altium.com/education/students}
+\end{minipage}
+
+\subsection{Installation}
+Use the Altium provided instructions in your email to install Altium Designer.\\
+
+The Altium licenses that we have access to are what are called "On-demand licenses". These types of licenses are tied to your account and can be transferred between computers but only ever used by one computer at a time.
+
+\begin{important}
+    A single license must be \textbf{released} before it can be used on another computer. Try to use \verb|Roam| wherever possible, and release the license if you stop using it on that computer.
+  \end{important}
+
+\newpage
+\section{Starting a Design}
+If the project has already been set up for you, skip to \ref{opnProj}
+\subsection{Create the project}
+\subsection{Opening the project}
+\label{opnProj}
+
+
+\end{document}
