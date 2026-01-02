@@ -3,9 +3,7 @@
 Welcome to UGR Electrical's documentation repo. The goal here is that anyone can contribute if they feel the documentation needs changed, and provides a central location to access everything. LaTeX will be used throughout your degree if you haven't started already and is a good skill to have, and so is what is used to write the majority of the documentation in this repo.
 
 ## Table of contents
-
 ---
-
 ### Software
 
 Altium: 
