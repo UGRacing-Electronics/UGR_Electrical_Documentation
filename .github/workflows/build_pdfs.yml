@@ -32,7 +32,32 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "Manual trigger detected - compiling all main.tex files"
-            tex_files=$(find . -name "main.tex")
+            find . -name "main.tex" -print0 | while IFS= read -r -d '' tex_file; do
+              echo "Processing: $tex_file"
+              
+              # Get the directory containing main.tex
+              tex_dir=$(dirname "$tex_file")
+              
+              # Get the folder name (parent directory name)
+              folder_name=$(basename "$tex_dir")
+              
+              # Change to the directory containing main.tex
+              cd "$tex_dir"
+              
+              # Compile the LaTeX file with Tectonic
+              tectonic main.tex
+              
+              # Rename the output PDF
+              if [ -f "main.pdf" ]; then
+                mv main.pdf "${folder_name}.pdf"
+                echo "Created: ${folder_name}.pdf"
+              else
+                echo "Error: Failed to create PDF for $tex_file"
+              fi
+              
+              # Return to the root directory
+              cd - > /dev/null
+            done
           else
             echo "Push/PR trigger detected - compiling only changed main.tex files"
             # Get changed files in the push (compare with previous commit)
@@ -52,72 +77,69 @@ jobs:
               exit 0
             fi
             
-            # Find directories containing changed files
-            changed_dirs=$(echo "$changed_files" | xargs -r dirname | sort -u)
-            
-            echo "Changed directories:"
-            echo "$changed_dirs"
-            
-            # Find main.tex files in those directories or their parents
-            tex_files=""
-            for dir in $changed_dirs; do
+            # Process each changed file
+            found_tex=false
+            while IFS= read -r file; do
+              [ -z "$file" ] && continue
+              
+              echo "Processing changed file: $file"
+              
+              # Get directory of changed file
+              dir=$(dirname "$file")
+              
               echo "Checking directory: $dir"
+              
               # Check current directory and all parent directories for main.tex
               current_dir="$dir"
               while [ "$current_dir" != "." ]; do
                 echo "  Looking in: $current_dir"
                 if [ -f "$current_dir/main.tex" ]; then
                   echo "  Found main.tex in $current_dir"
-                  tex_files="$tex_files $current_dir/main.tex"
+                  found_tex=true
+                  
+                  # Get the folder name (parent directory name)
+                  folder_name=$(basename "$current_dir")
+                  
+                  # Change to the directory containing main.tex
+                  cd "$current_dir"
+                  
+                  # Compile the LaTeX file with Tectonic
+                  echo "Compiling $current_dir/main.tex"
+                  tectonic main.tex
+                  
+                  # Rename the output PDF
+                  if [ -f "main.pdf" ]; then
+                    mv main.pdf "${folder_name}.pdf"
+                    echo "Created: ${folder_name}.pdf"
+                  else
+                    echo "Error: Failed to create PDF for $current_dir/main.tex"
+                  fi
+                  
+                  # Return to the root directory
+                  cd - > /dev/null
                   break
                 fi
                 current_dir=$(dirname "$current_dir")
               done
+              
               # Also check root directory
-              if [ -f "./main.tex" ]; then
+              if [ "$dir" != "." ] && [ -f "./main.tex" ]; then
                 echo "  Found main.tex in root"
-                tex_files="$tex_files ./main.tex"
+                found_tex=true
+                tectonic main.tex
+                if [ -f "main.pdf" ]; then
+                  root_name=$(basename "$PWD")
+                  mv main.pdf "${root_name}.pdf"
+                  echo "Created: ${root_name}.pdf"
+                fi
               fi
-            done
+            done <<< "$changed_files"
             
-            # Remove duplicates
-            tex_files=$(echo "$tex_files" | tr ' ' '\n' | sort -u | tr '\n' ' ')
-            
-            echo "Final tex_files to compile: $tex_files"
-            
-            if [ -z "$tex_files" ]; then
+            if [ "$found_tex" = false ]; then
               echo "No main.tex files affected by changes"
               exit 0
             fi
           fi
-          
-          # Compile each found main.tex file
-          for tex_file in $tex_files; do
-            echo "Processing: $tex_file"
-            
-            # Get the directory containing main.tex
-            tex_dir=$(dirname "$tex_file")
-            
-            # Get the folder name (parent directory name)
-            folder_name=$(basename "$tex_dir")
-            
-            # Change to the directory containing main.tex
-            cd "$tex_dir"
-            
-            # Compile the LaTeX file with Tectonic
-            tectonic main.tex
-            
-            # Rename the output PDF
-            if [ -f "main.pdf" ]; then
-              mv main.pdf "${folder_name}.pdf"
-              echo "Created: ${folder_name}.pdf"
-            else
-              echo "Error: Failed to create PDF for $tex_file"
-            fi
-            
-            # Return to the root directory
-            cd - > /dev/null
-          done
       
       - name: Commit and push PDFs
         run: |
