@@ -30,8 +30,42 @@ jobs:
       
       - name: Find and compile LaTeX files
         run: |
-          # Find all main.tex files
-          find . -name "main.tex" | while read -r tex_file; do
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Manual trigger detected - compiling all main.tex files"
+            tex_files=$(find . -name "main.tex")
+          else
+            echo "Push/PR trigger detected - compiling only changed main.tex files"
+            # Get changed files in the push
+            changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            
+            # Find directories containing changed files
+            changed_dirs=$(echo "$changed_files" | xargs -r dirname | sort -u)
+            
+            # Find main.tex files in those directories or their parents
+            tex_files=""
+            for dir in $changed_dirs; do
+              # Check current directory and all parent directories for main.tex
+              current_dir="$dir"
+              while [ "$current_dir" != "." ]; do
+                if [ -f "$current_dir/main.tex" ]; then
+                  tex_files="$tex_files $current_dir/main.tex"
+                  break
+                fi
+                current_dir=$(dirname "$current_dir")
+              done
+            done
+            
+            # Remove duplicates
+            tex_files=$(echo "$tex_files" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+            
+            if [ -z "$tex_files" ]; then
+              echo "No main.tex files affected by changes"
+              exit 0
+            fi
+          fi
+          
+          # Compile each found main.tex file
+          for tex_file in $tex_files; do
             echo "Processing: $tex_file"
             
             # Get the directory containing main.tex
