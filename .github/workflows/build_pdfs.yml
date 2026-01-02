@@ -1,0 +1,72 @@
+name: Build LaTeX PDFs
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/*.pdf'   # prevent infinite loop when CI commits PDFs
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install TeX (via Tectonic)
+        uses: wtfjoke/setup-tectonic@v2
+
+      - name: Build all main.tex files and place PDFs next to them
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Find every main.tex (handles spaces safely)
+          while IFS= read -r -d '' texfile; do
+            dir="$(dirname "$texfile")"
+            folder="$(basename "$dir")"
+            outdir="$(mktemp -d)"
+
+            echo "Compiling: $texfile"
+            # Compile into temp dir (keeps aux files out of your repo folders)
+            tectonic -X compile \
+              --outdir "$outdir" \
+              --synctex \
+              --keep-logs \
+              "$texfile"
+
+            # Tectonic outputs a PDF with the same base name as the .tex
+            pdf_src="$outdir/$(basename "${texfile%.tex}").pdf"
+            pdf_dst="$dir/$folder.pdf"
+
+            if [[ ! -f "$pdf_src" ]]; then
+              echo "ERROR: PDF not found at $pdf_src"
+              exit 1
+            fi
+
+            mv -f "$pdf_src" "$pdf_dst"
+            echo "Wrote: $pdf_dst"
+          done < <(find . -name 'main.tex' -print0)
+
+      - name: Commit PDFs (if changed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git status --porcelain | grep -E '\.pdf$' >/dev/null; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add '**/*.pdf'
+            git commit -m "CI: build PDFs"
+            git push
+          else
+            echo "No PDF changes to commit."
+          fi
