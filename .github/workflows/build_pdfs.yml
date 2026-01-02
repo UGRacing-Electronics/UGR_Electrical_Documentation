@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Install Tectonic
@@ -35,11 +35,22 @@ jobs:
             tex_files=$(find . -name "main.tex")
           else
             echo "Push/PR trigger detected - compiling only changed main.tex files"
-            # Get changed files in the push
-            changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            # Get changed files in the push (compare with previous commit)
+            changed_files=$(git diff --name-only HEAD^1 HEAD)
             
             echo "Changed files:"
             echo "$changed_files"
+            
+            # Filter out changes to .github/workflows to avoid triggering on workflow updates
+            changed_files=$(echo "$changed_files" | grep -v "^\.github/workflows/" || true)
+            
+            echo "Changed files (excluding workflow):"
+            echo "$changed_files"
+            
+            if [ -z "$changed_files" ]; then
+              echo "No relevant files changed (only workflow files updated)"
+              exit 0
+            fi
             
             # Find directories containing changed files
             changed_dirs=$(echo "$changed_files" | xargs -r dirname | sort -u)
