@@ -1,72 +1,71 @@
-name: Build LaTeX PDFs
+name: Compile LaTeX Files
 
 on:
   push:
-    branches: [ main ]
-    paths-ignore:
-      - '**/*.pdf'   # prevent infinite loop when CI commits PDFs
-      - '**/*.png'
-      - '**/*.jpg'
-      - '**/*.jpeg'
-
-permissions:
-  contents: write
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  compile-latex:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Install TeX (via Tectonic)
-        uses: wtfjoke/setup-tectonic@v2
-
-      - name: Build all main.tex files and place PDFs next to them
-        shell: bash
+      
+      - name: Install Tectonic
+        uses: wtfjoke/setup-tectonic@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Find and compile LaTeX files
         run: |
-          set -euo pipefail
-
-          # Find every main.tex (handles spaces safely)
-          while IFS= read -r -d '' texfile; do
-            dir="$(dirname "$texfile")"
-            folder="$(basename "$dir")"
-            outdir="$(mktemp -d)"
-
-            echo "Compiling: $texfile"
-            # Compile into temp dir (keeps aux files out of your repo folders)
-            tectonic -X compile \
-              --outdir "$outdir" \
-              --synctex \
-              --keep-logs \
-              "$texfile"
-
-            # Tectonic outputs a PDF with the same base name as the .tex
-            pdf_src="$outdir/$(basename "${texfile%.tex}").pdf"
-            pdf_dst="$dir/$folder.pdf"
-
-            if [[ ! -f "$pdf_src" ]]; then
-              echo "ERROR: PDF not found at $pdf_src"
-              exit 1
+          # Find all main.tex files
+          find . -name "main.tex" | while read -r tex_file; do
+            echo "Processing: $tex_file"
+            
+            # Get the directory containing main.tex
+            tex_dir=$(dirname "$tex_file")
+            
+            # Get the folder name (parent directory name)
+            folder_name=$(basename "$tex_dir")
+            
+            # Change to the directory containing main.tex
+            cd "$tex_dir"
+            
+            # Compile the LaTeX file with Tectonic
+            tectonic main.tex
+            
+            # Rename the output PDF
+            if [ -f "main.pdf" ]; then
+              mv main.pdf "${folder_name}.pdf"
+              echo "Created: ${folder_name}.pdf"
+            else
+              echo "Error: Failed to create PDF for $tex_file"
             fi
-
-            mv -f "$pdf_src" "$pdf_dst"
-            echo "Wrote: $pdf_dst"
-          done < <(find . -name 'main.tex' -print0)
-
-      - name: Commit PDFs (if changed)
-        shell: bash
+            
+            # Return to the root directory
+            cd - > /dev/null
+          done
+      
+      - name: Commit and push PDFs
         run: |
-          set -euo pipefail
-          if git status --porcelain | grep -E '\.pdf$' >/dev/null; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add '**/*.pdf'
-            git commit -m "CI: build PDFs"
-            git push
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add all PDFs
+          git add "**/*.pdf"
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
           else
-            echo "No PDF changes to commit."
+            git commit -m "Auto-compile LaTeX files [skip ci]"
+            git push
           fi
