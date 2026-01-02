@@ -8,7 +8,7 @@ Welcome to UGR Electrical's documentation repo. The goal here is that anyone can
 
 Altium: 
 
-- [Getting Started](https://github.com/UGRacing-Electronics/UGR_Electrical_Documentation/blob/main/Software/Altium/Getting%20Started/Getting%20Started.pdf?raw=true)
+- [Getting Started](<https://github.com/UGRacing-Electronics/UGR_Electrical_Documentation/blob/main/Software/Altium/Getting%20Started/Getting%20Started.pdf?raw=1>)
 
 ## How this repo works
 
