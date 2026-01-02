@@ -3,7 +3,6 @@
 Welcome to UGR Electrical's documentation repo. The goal here is that anyone can contribute if they feel the documentation needs changed, and provides a central location to access everything. LaTeX will be used throughout your degree if you haven't started already and is a good skill to have, and so is what is used to write the majority of the documentation in this repo.
 
 ## Table of contents
----
 ### Software
 
 Altium: 
@@ -15,19 +14,19 @@ Altium:
 
 This repo is set up to use GitHub Actions to compile the LaTeX PDF. When running the compile process the action will check for changes made to files called "main.tex". Therefore, whatever file structure you use, please call your main .Tex file `main.tex`. Otherwise the action will not recognise that there is a tex file to compile. Please also make sure that the folder containing your "main.tex" is titled appropriately, as it will use this folder name to determine what to call your PDF.
 
-**TL;DR: Name your tex file main.tex, and after a commit a PDF will be generated in that folder under the name of the parent folder.**
-
-e.g.     /Software/Altium/Getting Started/**main.tex** => /Software/Altium/Getting Started/**Getting Started.pdf**
+e.g.     /Software/Altium/Getting Started/**main.tex** =(compiles to)=> /Software/Altium/Getting Started/**Getting Started.pdf**
 
 **Do not edit the action workflow unless you know what you're doing**
+
+**TL;DR: Name your tex file main.tex, and after a commit a PDF will be generated in that folder under the name of the parent folder.**
 
 ## Creating a new document
 
 If creating a LaTeX document from scratch, there will be no prior folder set up for use. It is therefore important that you follow the existing file structure and name your folders appropriately. For details on how to name your files and final folder, please read the "How this repo works" section above. It is very important come compile time. Otherwise, just be reasonable with your folder names, and please please please capitalise correctly.
 
-## Making Changes
+In this repo you will find some template .tex files for you to create documentation with. A readme is supplied in the templates directory with more information on the templates and additional helper .tex files that you may find useful.
 
----
+## Making Changes
 
 If you have editing abilities for this repository/this organisation, you have been trusted to not mess with or break anything. **Please do not abuse this trust.** If you are unsure if your addition is useful or functional, check with your team head before pushing a commit.
 
@@ -46,15 +45,13 @@ Once you’ve made your changes and you’ve checked with your team head, you ar
 
 Please note: **Overleaf has no branching functions, you will be pushing directly to main.**
 
-If you create any additional guides/PDFs, please add them to the table of contents at the start of this readme. Please do this by appending “?raw=true” to the end of the github link for the PDF. e.g.
+If you create any additional guides/PDFs, please add them to the table of contents at the start of this readme. Please do this by using the "raw" link to the PDF. To do this, change `github.com` to `raw.githubusercontent.com` and delete the `/blob` part of the url. See below for how that works:
 
-```
-https://github.com/UGRacing-Electronics/UGR_Electrical_Documentation/blob/main/Software/Altium/Getting Started/Getting%20Started.pdf
+https://**github.com/UGRacing-Electronics/UGR_Electrical_Documentation/blob**/main/Software/Altium/Getting Started/Getting%20Started.pdf
 
 becomes
 
-https://github.com/UGRacing-Electronics/UGR_Electrical_Documentation/blob/main/Software/Altium/Getting Started/Getting%20Started.pdf?raw=true
-```
+https://**raw.githubusercontent.com/UGRacing-Electronics/UGR_Electrical_Documentation**/main/Software/Altium/Getting Started/Getting%20Started.pdf
 
 ## Force recompile all main.tex files
 
