@@ -34,4 +34,4 @@ This is a helper tex that gives nice formatting to "Notes", "Important" boxes th
     NOTEWORTHY INFO % Standard LaTeX can be used here
 \end{note}
 ```
-![result](image.png)
+![result](readme_files/emphasis_box.png)
