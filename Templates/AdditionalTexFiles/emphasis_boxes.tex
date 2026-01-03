@@ -1,0 +1,76 @@
+\usepackage[most]{tcolorbox}
+\usepackage{fontawesome5}
+\usepackage{xcolor}
+
+\definecolor{noteBlue}{RGB}{46,123,246}
+\definecolor{noteTitleBg}{RGB}{235,242,252}
+\definecolor{boxFrame}{RGB}{210,210,210}
+
+\newtcolorbox{note}{
+  enhanced,
+  arc=1mm,
+  boxrule=0.4pt,
+  colframe=boxFrame,
+  colback=white,
+  fontupper=\small,
+  fonttitle=\small\bfseries,
+  left=3mm,
+  right=2mm,
+  top=2mm,
+  bottom=2mm,
+  title={\vspace{1mm}\textcolor{noteBlue}{\faInfoCircle}\hspace{0.5em}Note\vspace{1mm}},
+  coltitle=black,
+  colbacktitle=noteTitleBg,
+  boxed title style={
+    colback=noteTitleBg,
+    colframe=noteTitleBg,
+    boxrule=0pt,
+    arc=2mm,
+    left=1mm,
+    right=1mm,
+    top=1mm,
+    bottom=1mm
+  },
+  overlay={
+    \begin{tcbclipframe}
+      \path[fill=noteBlue]
+        (frame.north west) rectangle ([xshift=3pt]frame.south west);
+    \end{tcbclipframe}
+  },
+}
+
+\definecolor{importantRed}{RGB}{220, 53, 69}
+\definecolor{importantTitleBg}{RGB}{252, 237, 238}
+
+\newtcolorbox{important}{
+  enhanced,
+  arc=1mm,
+  boxrule=0.4pt,
+  colframe=boxFrame,
+  colback=white,
+  fontupper=\small,
+  fonttitle=\small\bfseries,
+  left=3mm,
+  right=2mm,
+  top=2mm,
+  bottom=2mm,
+  title={\vspace{1mm}\textcolor{importantRed}{\faInfoCircle}\hspace{0.5em}Important\vspace{1mm}},
+  coltitle=black,
+  colbacktitle=importantTitleBg,
+  boxed title style={
+    colback=importantTitleBg,
+    colframe=importantTitleBg,
+    boxrule=0pt,
+    arc=2mm,
+    left=1mm,
+    right=1mm,
+    top=1mm,
+    bottom=1mm
+  },
+  overlay={
+    \begin{tcbclipframe}
+      \path[fill=importantRed]
+        (frame.north west) rectangle ([xshift=3pt]frame.south west);
+    \end{tcbclipframe}
+  },
+}
