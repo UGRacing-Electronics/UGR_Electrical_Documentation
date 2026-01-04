@@ -19,3 +19,5 @@ jobs:
       event_type: ${{ github.event_name }}
       repository: ${{ github.repository }}
       ref: ${{ github.ref }}
+    secrets:
+      CI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
