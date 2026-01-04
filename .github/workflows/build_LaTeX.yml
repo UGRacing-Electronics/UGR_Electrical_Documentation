@@ -33,7 +33,7 @@ jobs:
       
       - name: Find and compile LaTeX files
         run: |
-          if [ "${{ event_type }}" == "workflow_dispatch" ]; then
+          if [ "${{ inputs.event_type }}" == "workflow_dispatch" ]; then
             echo "Manual trigger detected - compiling all main.tex files"
             find . -name "main.tex" -print0 | while IFS= read -r -d '' tex_file; do
               echo "Processing: $tex_file"
