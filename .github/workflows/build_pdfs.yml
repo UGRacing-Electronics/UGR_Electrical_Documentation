@@ -16,4 +16,6 @@ jobs:
   trigger-compile-workflow:
     uses: UGRacing-Electronics/UGR_Electrical_Documentation/.github/workflows/build_LaTeX.yml@main
     with:
-      event-type: github.event_name
+      event_type: ${{ github.event_name }}
+      repository: ${{ github.repository }}
+      ref: ${{ github.ref }}
