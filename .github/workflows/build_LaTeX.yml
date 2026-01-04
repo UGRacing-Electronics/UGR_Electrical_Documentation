@@ -29,7 +29,7 @@ jobs:
       - name: Install Tectonic
         uses: wtfjoke/setup-tectonic@v3
         with:
-          token: ${{ secrets.CI_TOKEN }}
+          github-token: ${{ secrets.CI_TOKEN }}
       
       - name: Find and compile LaTeX files
         run: |
