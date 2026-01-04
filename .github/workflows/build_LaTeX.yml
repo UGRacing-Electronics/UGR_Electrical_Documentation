@@ -1,4 +1,4 @@
-name: Compile LaTeX Files (Reuseable)
+name: Sub-Action - Compile LaTeX Files (Reuseable)
 
 on:
   workflow_call:
