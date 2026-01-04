@@ -14,6 +14,6 @@ permissions:
 
 jobs:
   trigger-compile-workflow:
-    uses: UGRacing-Electronics/UGR_Electrical_Management_Documentation/.github/workflows/build_LaTeX.yml@main
+    uses: UGRacing-Electronics/UGR_Electrical_Management_Documentation/.github/workflows/build_LaTeX.yml@a224bb561d67de360a156dd7499696cf972a0fe9
     with:
       event-type: github.event_name
