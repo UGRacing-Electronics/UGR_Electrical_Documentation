@@ -81,11 +81,132 @@ The Altium licenses that students have access to are what are called "On-demand 
 \newpage
 \section{Starting a Design}
 If the project has already been set up for you, skip to \ref{opnProj}
-\subsection{Create the project}
+\subsection{Creating a project}
+To start, make sure you have the UGRacing workspace open, by checking the top right corner. You will either have a blue cloud with your name/UGRacing, or a grey cloud with the text "Not connected". Select this and choose "University of Glasgow - UGRacing". To create a new project you'll need to use the "Projects" menu on the left hand side. In this panel, right click the blue cloud with the text "University of Glasgow - UGRacing" and choose "Create Project".\\
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/create_context.png}
+    % \caption{Create project button}
+    \label{fig:placeholder}
+\end{figure}
 
-\subsection{Opening the project}
+In the new window that pops up, fill in the required information, and click create. Ensure the location is still set to "University of Glasgow" on the left hand side, and that version control is checked.
+\subsection{Opening a project}
 \label{opnProj}
+To open an existing project, use right click the University of Glasgow - UGRacing blue cloud in the Projects panel and click open project. \\
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/create_context.png}
+    % \caption{Create project button}
+    \label{fig:placeholder}
+\end{figure}
 
+\subsection{Starting your design}
+Once you have opened or created a project you should see an empty project in the "Projects" panel on the left hand side.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/blank_project.png}
+    % \caption{Create project button}
+    \label{fig:placeholder}
+\end{figure}
+
+To create a new file right click on your project, and click "Schematic" under "Add new to project".
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Software//Altium//Getting Started//images/add_new_to.png}
+    \label{fig:placeholder}
+\end{figure}
+
+Now that you have created a schematic, rename it to whatever is appropriate. Next, open the properties panel using the button on the right hand side. If Properties is not there, select it using the "Panels" button in the bottom right hand corner.\\
+
+Scroll down to the bottom of this panel and under "Page Options" select template, and use the dropdown menu to select "UGRacing A4 Template".\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/schematic_template.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\newpage
+\section{Components}
+In UGR we have a set of standard components, which are expected to be regularly stocked. Sticking to these components wherever possible means that not only do we save money as a team, but should any repairs or spares need to be assembled we do not need to wait for parts to arrive.
+
+\begin{important}
+    In your designs \textbf{do not} use "Manufacturer Parts Search" results directly, they must be added to the library first. Though feel free to use it to find a suitable part.
+\end{important}
+
+Think of this as a 3 tier system, with Standard Components at the top, Specialised Components in the middle and brand new components at the bottom. If you can't find what you want in the list of standard components, look in the specialised components, and only if you still can't find what you want, should you spec and find a new part to be ordered.
+
+\subsection{Standard Components}
+To access these components, open the "Components" panel on the right hand side, and use the dropdown to find your component.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/components.png}
+    \label{fig:placeholder}
+\end{figure}
+
+Once you find your component, you can click and drag it onto your schematic. For passives we have "Generic" components defined by their package size. To use these, drag them onto the schematic like any other component and double click the package size you chose and edit the "Value" field to define your value.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/passive_value.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{important}
+    When choosing passive values, refer to the standardisation document. For resistors and capacitors you must only choose values available in the books or on our reels. Any other value should have a specific part specced and found.
+\end{important}
+
+Any other standard component can be simply dragged onto the schematic, and connected.
+
+\subsection{Specialised Components}
+
+Specialised components are components that were previously special ordered for boards as there were no standard components that suited the use case. Since we generally order spares during PCB orders, often these specialised components are available but rarely used. So if a part is not available as standard, please check the specialised parts.\\
+
+Specialised parts can be found by selecting the category with the suffix "(Specialised)" in the components dropdown.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Software//Altium//Getting Started//images/diodes_specialised.png}
+    \label{fig:placeholder}
+\end{figure}
+
+If you cannot find a suitable part in the specialised folder, see \cref{parts_requests}.
+
+\subsection{Part Requests} \label{parts_requests}
+
+Use part requests if you cannot find a suitable part in the standard or specialised component folders. To submit a part request open the "Explorer" panel on the right hand side (if you can't see it use the "Panels" button).\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{Software//Altium//Getting Started//images/explorer_part_request.png}
+\end{figure}
+
+Open the "Parts requests" folder, and click "Submit request".\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{Software//Altium//Getting Started//images/new_request.png}
+\end{figure}
+
+Fill out the required information.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Software//Altium//Getting Started//images/part_request.png}
+\end{figure}
+
+\begin{note}
+    Please let your team head know after you have submitted a part request, it may otherwise go un-noticed.
+\end{note}
+
+\newpage
+
+\section{Everything else}
+Below are a list of YouTube videos that we recommend you use. 
 \end{document}
